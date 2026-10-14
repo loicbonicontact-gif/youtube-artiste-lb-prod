@@ -1,0 +1,39 @@
+name: Collecte quotidienne YouTube
+
+on:
+  schedule:
+    # tous les jours à 8h00 UTC
+    - cron: "0 8 * * *"
+  workflow_dispatch: {}
+    # workflow_dispatch permet aussi de lancer le workflow manuellement depuis GitHub
+
+jobs:
+  collecte:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le code du dépôt
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+
+      - name: Préparer la clé du compte de service Google Cloud
+        run: echo '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}' > gcp-key.json
+
+      - name: Lancer la collecte
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          GOOGLE_APPLICATION_CREDENTIALS: gcp-key.json
+        run: python3 collecte_youtube.py
+
+      - name: Sauvegarder les logs comme preuve d'exécution
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs-collecte
+          path: logs/collecte.log
