@@ -49,6 +49,11 @@ Pour BigQuery en local : être authentifié avec `gcloud auth application-defaul
 - `notebooks/01_collecte_youtube.ipynb` — collecte et nettoyage
 - `notebooks/02_bigquery.ipynb` — chargement BigQuery et requêtes SQL
 
+**Requêtes SQL** (étape 03, extraites du notebook pour être exécutables indépendamment) :
+- `sql/01_top_10_videos.sql`
+- `sql/02_taux_engagement.sql`
+- `sql/03_videos_par_annee.sql`
+
 **Script d'automatisation** (étape 04, reprend la même logique en un seul fichier) :
 ```bash
 python3 collecte_youtube.py
@@ -60,9 +65,10 @@ Les logs sont écrits dans `logs/collecte.log` (non versionné).
 
 GitHub Actions exécute `collecte_youtube.py` automatiquement tous les jours. Le chargement BigQuery utilise `WRITE_TRUNCATE` (remplace la table à chaque exécution), donc aucun doublon n'est créé même en cas de ré-exécution manuelle.
 
-Secrets utilisés par le workflow (configurés dans les paramètres du dépôt GitHub, jamais commités) :
+Authentification Google Cloud sans clé JSON stockée : **Workload Identity Federation**. GitHub Actions s'authentifie directement via le compte de service dédié `github-actions-youtube-artiste@api-au-tableau-de-bord.iam.gserviceaccount.com` (droits limités à BigQuery).
+
+Secret utilisé par le workflow (configuré dans les paramètres du dépôt GitHub, jamais commité) :
 - `YOUTUBE_API_KEY`
-- `GCP_SERVICE_ACCOUNT_KEY` : clé JSON d'un compte de service dédié, droits limités à BigQuery
 
 ## Données
 
