@@ -7,6 +7,12 @@ on:
   workflow_dispatch: {}
     # workflow_dispatch permet aussi de lancer le workflow manuellement depuis GitHub
 
+permissions:
+  contents: read
+  id-token: write
+  # id-token: write est nécessaire pour l'authentification Google Cloud
+  # sans clé JSON (Workload Identity Federation)
+
 jobs:
   collecte:
     runs-on: ubuntu-latest
@@ -22,13 +28,15 @@ jobs:
       - name: Installer les dépendances
         run: pip install -r requirements.txt
 
-      - name: Préparer la clé du compte de service Google Cloud
-        run: echo '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}' > gcp-key.json
+      - name: Authentification Google Cloud (sans clé JSON)
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/1035418831203/locations/global/workloadIdentityPools/github-actions-pool/providers/github-provider
+          service_account: github-actions-youtube-artiste@api-au-tableau-de-bord.iam.gserviceaccount.com
 
       - name: Lancer la collecte
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-          GOOGLE_APPLICATION_CREDENTIALS: gcp-key.json
         run: python3 collecte_youtube.py
 
       - name: Sauvegarder les logs comme preuve d'exécution
