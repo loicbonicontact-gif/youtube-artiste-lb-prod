@@ -1,9 +1,9 @@
-name: Collecte quotidienne YouTube
+name: Collecte horaire YouTube
 
 on:
   schedule:
-    # tous les jours à 8h00 UTC
-    - cron: "0 8 * * *"
+    # toutes les heures, à chaque heure pile
+    - cron: "0 * * * *"
   workflow_dispatch: {}
     # workflow_dispatch permet aussi de lancer le workflow manuellement depuis GitHub
 

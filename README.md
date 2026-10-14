@@ -30,7 +30,7 @@ BigQuery (projet api-au-tableau-de-bord, dataset youtube_artiste)
 Data Studio (dashboard)
 ```
 
-L'automatisation est gérée par **GitHub Actions** (`.github/workflows/collecte.yml`), planifiée pour tourner une fois par jour. Chaque exécution est visible dans l'onglet "Actions" du dépôt (preuve d'exécution).
+L'automatisation est gérée par **GitHub Actions** (`.github/workflows/collecte.yml`), planifiée pour tourner toutes les heures. Chaque exécution est visible dans l'onglet "Actions" du dépôt (preuve d'exécution).
 
 ## Installation
 
@@ -63,7 +63,7 @@ Les logs sont écrits dans `logs/collecte.log` (non versionné).
 
 ## Automatisation
 
-GitHub Actions exécute `collecte_youtube.py` automatiquement tous les jours. Le chargement BigQuery utilise `WRITE_TRUNCATE` (remplace la table à chaque exécution), donc aucun doublon n'est créé même en cas de ré-exécution manuelle.
+GitHub Actions exécute `collecte_youtube.py` automatiquement toutes les heures. Le chargement BigQuery utilise `WRITE_TRUNCATE` (remplace la table à chaque exécution), donc aucun doublon n'est créé même en cas de ré-exécution manuelle ou d'absence de changement entre deux collectes.
 
 Authentification Google Cloud sans clé JSON stockée : **Workload Identity Federation**. GitHub Actions s'authentifie directement via le compte de service dédié `github-actions-youtube-artiste@api-au-tableau-de-bord.iam.gserviceaccount.com` (droits limités à BigQuery).
 
