@@ -26,7 +26,9 @@ from google.cloud import bigquery
 # Dossier où se trouve ce script, pour que les chemins marchent peu importe d'où on le lance
 BASE_DIR = Path(__file__).resolve().parent
 LOG_DIR = BASE_DIR / "logs"
+DATA_DIR = BASE_DIR / "data"
 LOG_DIR.mkdir(exist_ok=True)
+DATA_DIR.mkdir(exist_ok=True)
 
 # Configuration des logs : écrit à la fois dans un fichier et à l'écran
 logging.basicConfig(
@@ -171,8 +173,8 @@ def main() -> None:
         videos_df = fetch_videos_stats(api_key, video_ids)
 
         # On garde aussi un export CSV, utile pour debug ou relecture rapide
-        channel_df.to_csv(BASE_DIR / "data" / "channel_profile.csv", index=False)
-        videos_df.to_csv(BASE_DIR / "data" / "videos.csv", index=False)
+        channel_df.to_csv(DATA_DIR / "channel_profile.csv", index=False)
+        videos_df.to_csv(DATA_DIR / "videos.csv", index=False)
 
         # Étape 2 : chargement dans BigQuery (même logique que le notebook 02_bigquery.ipynb)
         client = bigquery.Client(project=PROJECT_ID)
