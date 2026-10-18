@@ -83,6 +83,10 @@ Limite connue : `WRITE_TRUNCATE` remplace entièrement la table à chaque exécu
 
 Remarque : le `video_count` déclaré par l'API chaîne (68) diffère parfois d'une unité du nombre de vidéos réellement récupérées via la playlist uploads (67) — écart probable lié à une vidéo privée ou supprimée entre les deux appels, documenté dans le notebook de collecte.
 
+## Présentation orale
+
+Support de présentation (slides + notes orateur) : [docs/presentation_orale.pdf](docs/presentation_orale.pdf)
+
 ## Dashboard
 
 Lien Data Studio : https://datastudio.google.com/reporting/c3aff7db-b5ba-4ba3-831b-5ff7a6404d1a
