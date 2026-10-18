@@ -7,7 +7,8 @@ SELECT
   view_count,
   like_count,
   comment_count,
-  (like_count + comment_count) / view_count AS taux_engagement
+  -- SAFE_DIVIDE évite une erreur si une vidéo a 0 vue
+  SAFE_DIVIDE(like_count + comment_count, view_count) AS taux_engagement
 FROM `api-au-tableau-de-bord.youtube_artiste.videos`
 ORDER BY taux_engagement DESC
 LIMIT 10;

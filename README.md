@@ -77,6 +77,12 @@ Secret utilisé par le workflow (configuré dans les paramètres du dépôt GitH
 
 Contrôles qualité appliqués : vérification du code HTTP, conversion des types (texte → nombres/dates), détection des valeurs manquantes et des doublons, horodatage de chaque collecte (`collected_at`).
 
+Remarque : le `video_count` déclaré par l'API chaîne (68) diffère parfois d'une unité du nombre de vidéos réellement récupérées via la playlist uploads (67) — écart probable lié à une vidéo privée ou supprimée entre les deux appels, documenté dans le notebook de collecte.
+
 ## Dashboard
 
-Lien Data Studio : _à ajouter_
+Lien Data Studio : https://datastudio.google.com/reporting/c3aff7db-b5ba-4ba3-831b-5ff7a6404d1a
+
+Contenu :
+- Page 1 : 3 KPIs (nombre de vidéos, vues totales, taux d'engagement), top 10 des vidéos les plus vues, évolution des vues par année, filtre interactif par année de publication, conclusion métier.
+- Page 2 : analyse approfondie clips officiels vs autres formats (vues cumulées, engagement comparé, tableau détaillé du top 10).
