@@ -32,6 +32,8 @@ Data Studio (dashboard)
 
 L'automatisation est gérée par **GitHub Actions** (`.github/workflows/collecte.yml`), planifiée pour tourner toutes les heures. Chaque exécution est visible dans l'onglet "Actions" du dépôt (preuve d'exécution).
 
+Note honnête sur la fréquence : une fois par jour suffirait largement pour des stats YouTube (les vues/likes n'évoluent pas assez vite pour justifier un rafraîchissement horaire). Le choix horaire a été fait pour accumuler rapidement plusieurs exécutions visibles comme preuve d'automatisation dans le cadre du TP, pas parce qu'un besoin métier l'exigeait.
+
 ## Installation
 
 ```bash
@@ -76,6 +78,8 @@ Secret utilisé par le workflow (configuré dans les paramètres du dépôt GitH
 - `videos` : 1 ligne par vidéo (titre, date de publication, vues, likes, commentaires)
 
 Contrôles qualité appliqués : vérification du code HTTP, conversion des types (texte → nombres/dates), détection des valeurs manquantes et des doublons, horodatage de chaque collecte (`collected_at`).
+
+Limite connue : `WRITE_TRUNCATE` remplace entièrement la table à chaque exécution, donc `collected_at` n'indique que l'heure de la dernière collecte — il n'y a pas d'historique des collectes précédentes dans BigQuery. Pour un vrai suivi d'évolution dans le temps, il faudrait passer à un mode d'ajout (append) avec déduplication sur `(video_id, collected_at)`, ou une table d'historique séparée.
 
 Remarque : le `video_count` déclaré par l'API chaîne (68) diffère parfois d'une unité du nombre de vidéos réellement récupérées via la playlist uploads (67) — écart probable lié à une vidéo privée ou supprimée entre les deux appels, documenté dans le notebook de collecte.
 
